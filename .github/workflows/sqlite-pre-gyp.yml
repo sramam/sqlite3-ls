@@ -1,0 +1,22 @@
+on:
+  push:
+    branches:
+      - 'master'
+name: sqlite-pre-gyp-test
+
+jobs:
+  install-sqlite:
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [13, 14, 15]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    name: sqlite3.${{ matrix.os }}.${{ matrix.version }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm install
